@@ -151,7 +151,7 @@ Continuous vision tracking requires low latency and high energy efficiency. Omni
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/OmniGesture.git
+git clone https://github.com/sumitbodal/OmniGesture.git
 cd OmniGesture
 ```
 

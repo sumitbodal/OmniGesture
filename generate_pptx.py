@@ -259,7 +259,7 @@ add_textbox(slide7, 0.8, 5.8, 11, 0.8,
             font_size=20, color=ACCENT_GREEN, bold=True, alignment=PP_ALIGN.CENTER)
 
 add_textbox(slide7, 0.8, 6.6, 11, 0.5,
-            "Thank You! | GitHub: github.com/YOUR_USERNAME/omnigesture",
+            "Thank You! | GitHub: github.com/sumitbodal/OmniGesture",
             font_size=16, color=GRAY, alignment=PP_ALIGN.CENTER)
 
 # Save
