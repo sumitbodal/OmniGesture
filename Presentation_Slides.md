@@ -12,7 +12,7 @@
 - **Title:** OmniGesture v2.0
 - **Subtitle:** AI-Powered Hands-Free Accessibility Controller for Snapdragon HP PCs
 - **Competition Track:** Snapdragon AI Lab Build & Present Challenge
-- **Presenter Name:** [Your Name / Team Name]
+- **Presenter Name:** Sumit
 - **Date:** September 2026
 - **Target Platform:** HP OmniBook / EliteBook powered by Qualcomm Snapdragon X Elite / X Plus
 
