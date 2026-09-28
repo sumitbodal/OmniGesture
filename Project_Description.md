@@ -8,7 +8,7 @@
 
 ## 1. Executive Summary
 
-Digital inclusivity remains one of modern computing's most pressing challenges. Standard human-computer interfaces—specifically physical mice, touchpads, and keyboards—assume full fine-motor dexterity and sustained physical contact. For millions of individuals living with motor disabilities, cerebral palsy, spinal cord injuries, severe arthritis, or repetitive strain injuries (RSI), operating a standard PC is painful, exhausting, or physically impossible. Furthermore, high-performance specialized assistive hardware is often cost-prohibitive, fragile, and ergonomically limiting.
+Digital inclusivity remains one of modern computing's most pressing challenges. Standard human-computer interfaces—specifically physical mice, touchpads, and keyboards—assume full fine-motor dexterity and sustained physical contact. For millions of individuals living with motor disabilities, cerebral palsy, spinal cord injuries, severe arthritis, or repetitive strain injuries (RSI), operating a standard PC is painful, exhausting, or physically impossible. Worse still, specialized assistive hardware is often cost-prohibitive, fragile, and ergonomically limiting.
 
 **OmniGesture v2.0** is an intelligent, camera-based, hands-free human interface controller designed specifically for Snapdragon-powered HP PCs. By combining Google MediaPipe’s state-of-the-art vision Tasks API with a customized geometric gesture recognition engine, OmniGesture converts any standard integrated laptop webcam into an ultra-responsive, zero-hardware-cost, hands-free input peripheral. 
 

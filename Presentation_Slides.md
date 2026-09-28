@@ -84,7 +84,7 @@
 - **Fail-Safe Operation:** Dedicated Start/Stop toggle button decoupled from system-level interrupt loops.
 
 ### Presenter Notes (60 Seconds)
-> "OmniGesture v2.0 bridges this gap by delivering full OS mouse parity using six intuitive, natural gestures. The user points their index finger to smoothly guide the cursor across their multi-monitor workspace. Pinching triggers a left-click; flash a peace sign for an instant double-click; make a fist for a right-click context menu; hold up an open palm to glide through long web pages; and give a thumbs-up to toggle drag lock, letting you drag windows and select text effortlessly without muscle strain. Furthermore, our modern Tkinter control panel gives users total autonomy with a customizable smoothness slider—crucial for filtering out involuntary hand tremors—and live telemetry tracking."
+> "OmniGesture v2.0 bridges this gap by delivering full OS mouse parity using six intuitive, natural gestures. The user points their index finger to smoothly guide the cursor across their multi-monitor workspace. Pinching triggers a left-click; flash a peace sign for an instant double-click; make a fist for a right-click context menu; hold up an open palm to glide through long web pages; and give a thumbs-up to toggle drag lock, letting you drag windows and select text effortlessly without muscle strain. Our modern Tkinter control panel gives users total autonomy with a customizable smoothness slider—crucial for filtering out involuntary hand tremors—and live telemetry tracking."
 
 ### Slide Design & Visual Tips
 - **Layout:** Split slide (60/40). 
