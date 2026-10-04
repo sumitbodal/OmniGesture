@@ -51,35 +51,37 @@ class GestureRecognizer:
         """Check if a finger is extended (tip above PIP joint)."""
         return landmarks[finger_tip].y < landmarks[finger_pip].y
 
-    def is_thumb_up(self, landmarks):
-        """Check if thumb is extended (using x-axis for thumb)."""
-        return landmarks[4].x < landmarks[3].x  # For right hand (mirrored)
+    def is_thumb_up(self, landmarks, handedness):
+        """Check if thumb is extended, accounting for left/right hand."""
+        # MediaPipe returns 'Left' or 'Right'. In selfie-view (mirrored), x-coordinates invert.
+        if handedness == "Right":
+            return landmarks[4].x < landmarks[3].x
+        else:
+            return landmarks[4].x > landmarks[3].x
 
-    def get_finger_states(self, landmarks):
+    def get_finger_states(self, landmarks, handedness):
         """Get the up/down state of all 5 fingers."""
-        thumb = self.is_thumb_up(landmarks)
+        thumb = self.is_thumb_up(landmarks, handedness)
         index = self.is_finger_up(landmarks, 8, 6)
         middle = self.is_finger_up(landmarks, 12, 10)
         ring = self.is_finger_up(landmarks, 16, 14)
         pinky = self.is_finger_up(landmarks, 20, 18)
         return [thumb, index, middle, ring, pinky]
 
-    def get_pinch_distance(self, landmarks, img_w, img_h):
-        """Calculate pixel distance between thumb tip and index tip."""
-        ix = int(landmarks[8].x * img_w)
-        iy = int(landmarks[8].y * img_h)
-        tx = int(landmarks[4].x * img_w)
-        ty = int(landmarks[4].y * img_h)
+    def get_pinch_distance_relative(self, landmarks):
+        """Calculate relative distance between thumb tip and index tip (resolution independent)."""
+        ix, iy = landmarks[8].x, landmarks[8].y
+        tx, ty = landmarks[4].x, landmarks[4].y
         return math.hypot(tx - ix, ty - iy)
 
-    def recognize(self, landmarks, img_w, img_h):
+    def recognize(self, landmarks, handedness):
         """Recognize the current gesture from hand landmarks."""
-        fingers = self.get_finger_states(landmarks)
+        fingers = self.get_finger_states(landmarks, handedness)
         thumb, index, middle, ring, pinky = fingers
-        pinch_dist = self.get_pinch_distance(landmarks, img_w, img_h)
+        pinch_dist = self.get_pinch_distance_relative(landmarks)
 
-        # Pinch: Thumb and Index very close together
-        if pinch_dist < 35:
+        # Pinch: Thumb and Index very close together (relative distance < 0.05)
+        if pinch_dist < 0.05:
             return "PINCH"
 
         # Thumbs Up: Only thumb is up
@@ -226,12 +228,13 @@ class OmniGestureController:
                         self.on_fps_update(self.fps)
 
                 if result and result.hand_landmarks:
-                    for hand_landmarks in result.hand_landmarks:
+                    for idx, hand_landmarks in enumerate(result.hand_landmarks):
+                        handedness_info = result.handedness[idx][0].category_name
                         # Draw hand skeleton on camera feed
                         self._draw_landmarks(img, hand_landmarks, w, h)
 
                         # Recognize gesture
-                        gesture = self.gesture_recognizer.recognize(hand_landmarks, w, h)
+                        gesture = self.gesture_recognizer.recognize(hand_landmarks, handedness_info)
 
                         if gesture != self.current_gesture:
                             self.current_gesture = gesture
@@ -336,9 +339,10 @@ class OmniGestureController:
             screen_x = int(index_x * self.screen_w)
             screen_y = int(index_y * self.screen_h)
 
-            # Smooth movement
-            self.prev_x += (screen_x - self.prev_x) / self.sensitivity
-            self.prev_y += (screen_y - self.prev_y) / self.sensitivity
+            # Smooth movement (higher sensitivity = less smoothing = faster response)
+            smoothing_factor = max(1.0, 11.0 - self.sensitivity)
+            self.prev_x += (screen_x - self.prev_x) / smoothing_factor
+            self.prev_y += (screen_y - self.prev_y) / smoothing_factor
 
             try:
                 pyautogui.moveTo(self.prev_x, self.prev_y)
