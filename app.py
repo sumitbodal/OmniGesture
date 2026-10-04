@@ -155,7 +155,6 @@ class OmniGestureController:
 
         # Settings
         self.sensitivity = 5
-        self.click_cooldown = 0.5
 
     def start(self):
         """Start the gesture tracking in a background thread."""
