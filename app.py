@@ -26,7 +26,7 @@ import threading
 import tkinter as tk
 from tkinter import ttk
 
-# Disable PyAutoGUI fail-safe
+# Enable PyAutoGUI fail-safe
 pyautogui.FAILSAFE = True
 pyautogui.PAUSE = 0.01
 
