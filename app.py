@@ -16,6 +16,7 @@ Built with: MediaPipe (Edge AI) + OpenCV + PyAutoGUI
 Target: Snapdragon-powered HP PCs
 """
 
+import os
 import cv2
 import mediapipe as mp
 import pyautogui
@@ -26,7 +27,7 @@ import tkinter as tk
 from tkinter import ttk
 
 # Disable PyAutoGUI fail-safe
-pyautogui.FAILSAFE = False
+pyautogui.FAILSAFE = True
 pyautogui.PAUSE = 0.01
 
 # ============================================================
@@ -54,7 +55,9 @@ class GestureRecognizer:
     def is_thumb_up(self, landmarks, handedness):
         """Check if thumb is extended, accounting for left/right hand."""
         # MediaPipe returns 'Left' or 'Right'. In selfie-view (mirrored), x-coordinates invert.
-        if handedness == "Right":
+        # But wait, MediaPipe also predicts a flipped Right hand as a Left hand! 
+        # So we expect "Left" when it's the physical Right hand.
+        if handedness == "Left":
             return landmarks[4].x < landmarks[3].x
         else:
             return landmarks[4].x > landmarks[3].x
@@ -125,7 +128,6 @@ class OmniGestureController:
         # Mouse smoothing
         self.prev_x = 0
         self.prev_y = 0
-        self.smoothening = 5
 
         # Click cooldowns
         self.last_click_time = 0
@@ -144,7 +146,6 @@ class OmniGestureController:
         # Stats
         self.current_gesture = "NONE"
         self.fps = 0
-        self.frame_count = 0
 
         # Callbacks for UI updates
         self.on_gesture_change = None
@@ -181,8 +182,9 @@ class OmniGestureController:
 
     def _run(self):
         """Main processing loop (runs in background thread)."""
+        model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'hand_landmarker.task')
         options = HandLandmarkerOptions(
-            base_options=BaseOptions(model_asset_path='hand_landmarker.task'),
+            base_options=BaseOptions(model_asset_path=model_path),
             running_mode=VisionRunningMode.VIDEO,
             num_hands=1,
             min_hand_detection_confidence=0.5,
@@ -192,6 +194,10 @@ class OmniGestureController:
 
         with HandLandmarker.create_from_options(options) as landmarker:
             cap = cv2.VideoCapture(0)
+            if not cap.isOpened():
+                cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+            if not cap.isOpened():
+                cap = cv2.VideoCapture(0, cv2.CAP_MSMF)
 
             if not cap.isOpened():
                 self._log("ERROR: Cannot open webcam!")
